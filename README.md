@@ -15,10 +15,10 @@ Welcome to the **Task Management App**! This intuitive application allows users 
 ## 🖼️ Screenshots
 
 ### Home Page
-![Home Page](./assets/home.png)
+![Home Page](public/assets/home.png)
 
 ### Dashboard
-![Dashboard](./assets/dashboard.png)
+![Dashboard](public/assets/dashboard.png)
 
 ## 🛠️ Tech Stack
 
@@ -65,5 +65,8 @@ Check out the design on [Figma](https://www.figma.com/design/IYRypV3Qf76Qppl6knb
     npm run dev
     ```
 5. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+6. Deployed link of app [Deploy](https://task-management-lilac-eta.vercel.app/login)
+
+
 
 
