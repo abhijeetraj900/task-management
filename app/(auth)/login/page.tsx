@@ -4,12 +4,16 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/lib/firebase";
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+
+  const router = useRouter();
   const handleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       console.log("User Logged In:", result.user);
+      router.push('/dashboard');
     } catch (error) {
       console.error("Login Failed:", error);
     }
