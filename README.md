@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🗂 Task Management App
 
-## Getting Started
+Welcome to the **Task Management App**! This intuitive application allows users to manage their tasks efficiently using both List and Board views. This project was assigned by **AlterCompany** as a task to demonstrate my proficiency in building user-friendly task management solutions.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 📝 **Task Creation**: Easily add new tasks with essential details.
+- 🏷️ **Task Categorization & Tagging**: Categorize tasks like Work, Personal, or Urgent.
+- ⏳ **Due Dates Management**: Set and track task deadlines.
+- 🚀 **Drag-and-Drop**: Reorder tasks using an interactive board view.
+- ✅ **Task Status Management**: Update tasks to TO-DO, IN-PROGRESS, or COMPLETED.
+- 📦 **Batch Actions**: Perform bulk actions like task completion and deletion.
+- 📊 **View Options**: Switch between List and Board views for task management.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🖼️ Screenshots
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Home Page
+![Home Page](./assets/home.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Dashboard
+![Dashboard](./assets/dashboard.png)
 
-## Learn More
+## 🛠️ Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+<div align="center">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" width="50" height="50"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="50" height="50"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" width="50" height="50"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" alt="Firebase" width="50" height="50"/>
+  <img src="https://img.icons8.com/?size=100&id=4PiNHtUJVbLs&format=png&color=000000" alt="Tailwind CSS" width="50" height="50"/>
+  <img src="https://avatars.githubusercontent.com/u/139895814?v=4" alt="Shadcn UI"  width="50" height="50"/>
+  <img src="https://ludwhe.gallerycdn.vsassets.io/extensions/ludwhe/vscode-uuid/2.0.0/1735920620147/Microsoft.VisualStudio.Services.Icons.Default" alt="UUID"  width="50" height="50"/>
+  <img src="https://dndkit.com/dnd-kit-logo.svg" alt="DND Kit"  width="50" height="50"/>
+</div>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **React** for building the UI
+- **TypeScript** for type-safe code
+- **Next.js** for server-side rendering and routing
+- **Firebase** for authentication and database
+- **Tailwind CSS** for styling
+- **Shadcn UI** for UI components
+- **UUID** for generating unique IDs
+- **DND Kit** for drag-and-drop functionality
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛋️ Figma Design
 
-## Deploy on Vercel
+Check out the design on [Figma](https://www.figma.com/design/IYRypV3Qf76Qppl6knbm2U/Task-Management?node-id=0-1&p=f&t=yRK0dDSVgvAqz2am-0).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚀 Getting Started
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/username/task-management-app.git
+    ```
+2. Navigate to the project directory:
+    ```bash
+    cd task-management-app
+    ```
+3. Install dependencies:
+    ```bash
+    npm install
+    ```
+4. Start the application:
+    ```bash
+    npm run dev
+    ```
+5. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+
