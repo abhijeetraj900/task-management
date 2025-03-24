@@ -7,8 +7,13 @@ import { Button } from "@/components/ui/button"
 import TaskCard from "@/appComponents/tasks/task-card"
 import { TaskContext } from "@/context/task-context"
 
-export default function TaskBoardView() {
-  const { filteredTasks, reorderTasks } = useContext(TaskContext)
+interface TaskBoardViewProps {
+  onEditTask?: (taskId: string) => void
+  onAddTask?: () => void
+}
+
+export default function TaskBoardView({ onEditTask, onAddTask }: TaskBoardViewProps) {
+  const { filteredTasks } = useContext(TaskContext)
 
   const todoTasks = filteredTasks.filter((task) => task.status === "TO-DO")
   const inProgressTasks = filteredTasks.filter((task) => task.status === "IN-PROGRESS")
@@ -24,31 +29,40 @@ export default function TaskBoardView() {
       <div className="bg-white rounded-md shadow-sm overflow-hidden">
         <div className="bg-[#ffe8e4] px-4 py-3 font-medium flex justify-between items-center">
           <div>Todo ({todoTasks.length})</div>
-          <Button variant="ghost" size="sm" className="h-7 px-2">
+          <Button variant="ghost" size="sm" className="h-7 px-2" onClick={onAddTask}>
             <Plus className="h-4 w-4" />
           </Button>
         </div>
-        <div ref={setTodoRef} className="p-3 space-y-3 max-h-[calc(100vh-220px)] overflow-y-auto">
+        <div
+          ref={setTodoRef}
+          className="p-3 space-y-3 max-h-[calc(100vh-220px)] overflow-y-auto min-h-[200px] border-2 border-transparent hover:border-[#ffe8e4]"
+        >
           {todoTasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard key={task.id} task={task} onEditTask={onEditTask} />
           ))}
         </div>
       </div>
 
       <div className="bg-white rounded-md shadow-sm overflow-hidden">
         <div className="bg-[#85d9f1] px-4 py-3 font-medium">In-Progress ({inProgressTasks.length})</div>
-        <div ref={setInProgressRef} className="p-3 space-y-3 max-h-[calc(100vh-220px)] overflow-y-auto">
+        <div
+          ref={setInProgressRef}
+          className="p-3 space-y-3 max-h-[calc(100vh-220px)] overflow-y-auto min-h-[200px] border-2 border-transparent hover:border-[#85d9f1]"
+        >
           {inProgressTasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard key={task.id} task={task} onEditTask={onEditTask} />
           ))}
         </div>
       </div>
 
       <div className="bg-white rounded-md shadow-sm overflow-hidden">
         <div className="bg-[#ceffcc] px-4 py-3 font-medium">Completed ({completedTasks.length})</div>
-        <div ref={setCompletedRef} className="p-3 space-y-3 max-h-[calc(100vh-220px)] overflow-y-auto">
+        <div
+          ref={setCompletedRef}
+          className="p-3 space-y-3 max-h-[calc(100vh-220px)] overflow-y-auto min-h-[200px] border-2 border-transparent hover:border-[#ceffcc]"
+        >
           {completedTasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard key={task.id} task={task} onEditTask={onEditTask} />
           ))}
         </div>
       </div>

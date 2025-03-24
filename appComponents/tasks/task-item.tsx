@@ -1,21 +1,26 @@
 "use client"
 
 import { useContext } from "react"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Edit, Trash2 } from "lucide-react"
 import { useDraggable } from "@dnd-kit/core"
 import { CSS } from "@dnd-kit/utilities"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { TaskStatus } from "@/appComponents/tasks/task-status"
 import { TaskCategory } from "@/appComponents/tasks/task-category"
 import { type Task, TaskContext } from "@/context/task-context"
 
 interface TaskItemProps {
   task: Task
+  isDragging?: boolean
+  onEditTask?: (taskId: string) => void
 }
 
-export default function TaskItem({ task }: TaskItemProps) {
-  const { toggleTaskCompletion } = useContext(TaskContext)
+export default function TaskItem({ task, isDragging = false, onEditTask }: TaskItemProps) {
+  const { toggleTaskCompletion, deleteTask, toggleTaskSelection, isTaskSelected } = useContext(TaskContext)
+
+  const isSelected = isTaskSelected(task.id)
 
   // Set up draggable
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -38,13 +43,17 @@ export default function TaskItem({ task }: TaskItemProps) {
       style={style}
       {...attributes}
       {...listeners}
-      className="grid grid-cols-[1fr_120px_120px_120px] gap-4 px-6 py-3 border-t border-[#eaecf0] items-center cursor-grab active:cursor-grabbing"
+      className={`grid grid-cols-[1fr_120px_120px_120px] gap-4 px-6 py-3 border-t border-[#eaecf0] items-center cursor-grab active:cursor-grabbing ${
+        isDragging ? "opacity-50" : ""
+      } ${isSelected ? "bg-[#f0f0f0]" : ""}`}
     >
       <div className="flex items-center gap-2">
         <Checkbox
           id={`task-${task.id}`}
-          checked={task.status === "COMPLETED"}
-          onCheckedChange={() => toggleTaskCompletion(task.id)}
+          checked={isSelected}
+          onCheckedChange={() => toggleTaskSelection(task.id)}
+          onClick={(e) => e.stopPropagation()}
+          className="mr-1"
         />
         <div className="flex gap-1">
           <span className="text-[#7b1984] font-bold">:</span>
@@ -52,8 +61,18 @@ export default function TaskItem({ task }: TaskItemProps) {
         </div>
         <div className="flex items-center gap-2">
           <div
-            className={`h-4 w-4 rounded-full flex items-center justify-center
-            ${task.status === "COMPLETED" ? "border border-[#0d7a0a] bg-[#0d7a0a]" : "border border-[#979797]"}`}
+            className={`h-4 w-4 rounded-full flex items-center justify-center cursor-pointer
+              ${
+                task.status === "COMPLETED"
+                  ? "border border-[#0d7a0a] bg-[#0d7a0a]"
+                  : task.status === "IN-PROGRESS"
+                    ? "border border-[#2683b5] bg-[#2683b5]"
+                    : "border border-[#979797]"
+              }`}
+            onClick={(e) => {
+              e.stopPropagation()
+              toggleTaskCompletion(task.id)
+            }}
           >
             {task.status === "COMPLETED" ? (
               <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,6 +84,8 @@ export default function TaskItem({ task }: TaskItemProps) {
                   strokeLinejoin="round"
                 />
               </svg>
+            ) : task.status === "IN-PROGRESS" ? (
+              <div className="h-2 w-2 rounded-full bg-white"></div>
             ) : (
               <div className="h-2 w-2 rounded-full bg-[#979797]"></div>
             )}
@@ -76,9 +97,23 @@ export default function TaskItem({ task }: TaskItemProps) {
       <TaskStatus status={task.status} taskId={task.id} />
       <div className="flex justify-between items-center">
         <TaskCategory category={task.category} />
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <MoreHorizontal className="h-5 w-5 text-[#979797]" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <MoreHorizontal className="h-5 w-5 text-[#979797]" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => onEditTask && onEditTask(task.id)}>
+              <Edit className="mr-2 h-4 w-4" />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => deleteTask(task.id)} className="text-red-600">
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   )

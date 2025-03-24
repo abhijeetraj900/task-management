@@ -5,7 +5,12 @@ import { useDroppable } from "@dnd-kit/core"
 import TaskSection from "@/appComponents/tasks/task-section"
 import { TaskContext } from "@/context/task-context"
 
-export default function TaskListView() {
+interface TaskListViewProps {
+  onEditTask?: (taskId: string) => void
+  onAddTask?: () => void
+}
+
+export default function TaskListView({ onEditTask, onAddTask }: TaskListViewProps) {
   const { filteredTasks } = useContext(TaskContext)
 
   const todoTasks = filteredTasks.filter((task) => task.status === "TO-DO")
@@ -26,22 +31,37 @@ export default function TaskListView() {
         <div>Task Category</div>
       </div>
 
-      <div ref={setTodoRef}>
-        <TaskSection title="Todo" count={todoTasks.length} tasks={todoTasks} bgColor="bg-[#ffe8e4]" showAddTask />
+      <div ref={setTodoRef} className="border-b-2 border-transparent hover:border-[#ffe8e4]">
+        <TaskSection
+          title="Todo"
+          count={todoTasks.length}
+          tasks={todoTasks}
+          bgColor="bg-[#ffe8e4]"
+          showAddTask
+          onEditTask={onEditTask}
+          onAddTask={onAddTask}
+        />
       </div>
 
-      <div ref={setInProgressRef}>
+      <div ref={setInProgressRef} className="border-b-2 border-transparent hover:border-[#85d9f1]">
         <TaskSection
           title="In-Progress"
           count={inProgressTasks.length}
           tasks={inProgressTasks}
           bgColor="bg-[#85d9f1]"
           showLoadMore={inProgressTasks.length > 5}
+          onEditTask={onEditTask}
         />
       </div>
 
-      <div ref={setCompletedRef}>
-        <TaskSection title="Completed" count={completedTasks.length} tasks={completedTasks} bgColor="bg-[#ceffcc]" />
+      <div ref={setCompletedRef} className="border-b-2 border-transparent hover:border-[#ceffcc]">
+        <TaskSection
+          title="Completed"
+          count={completedTasks.length}
+          tasks={completedTasks}
+          bgColor="bg-[#ceffcc]"
+          onEditTask={onEditTask}
+        />
       </div>
     </div>
   )

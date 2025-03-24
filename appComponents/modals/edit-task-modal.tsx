@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useContext } from "react"
+import { useState, useEffect, useContext } from "react"
 import { X, Bold, Italic, List, ListOrdered, Calendar, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,13 +10,16 @@ import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { TaskContext } from "@/context/task-context"
 
-interface CreateTaskModalProps {
+interface EditTaskModalProps {
   isOpen: boolean
   onClose: () => void
+  taskId: string
 }
 
-export default function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProps) {
-  const { createTask } = useContext(TaskContext)
+export default function EditTaskModal({ isOpen, onClose, taskId }: EditTaskModalProps) {
+  const { tasks, editTask } = useContext(TaskContext)
+  const task = tasks.find((t) => t.id === taskId)
+
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [category, setCategory] = useState<"Work" | "Personal">("Work")
@@ -25,6 +28,17 @@ export default function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProp
   const [isStatusOpen, setIsStatusOpen] = useState(false)
   const [charCount, setCharCount] = useState(0)
 
+  useEffect(() => {
+    if (task) {
+      setTitle(task.name)
+      setDescription(task.description || "")
+      setCategory(task.category as "Work" | "Personal")
+      setDueDate(task.dueDate)
+      setStatus(task.status)
+      setCharCount(task.description?.length || 0)
+    }
+  }, [task])
+
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value
     setDescription(text)
@@ -32,33 +46,27 @@ export default function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProp
   }
 
   const handleSubmit = () => {
-    if (!title.trim()) return
+    if (!title.trim() || !task) return
 
-    createTask({
+    editTask(taskId, {
       name: title,
       description,
       category,
-      dueDate: dueDate || "Today",
+      dueDate,
       status,
     })
 
-    // Reset form
-    setTitle("")
-    setDescription("")
-    setCategory("Work")
-    setDueDate("")
-    setStatus("TO-DO")
-    setCharCount(0)
-
     onClose()
   }
+
+  if (!task) return null
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[550px] p-0 overflow-hidden">
         <DialogHeader className="px-6 py-4 border-b">
           <div className="flex justify-between items-center">
-            <DialogTitle className="text-xl font-medium">Create Task</DialogTitle>
+            <DialogTitle className="text-xl font-medium">Edit Task</DialogTitle>
             <Button variant="ghost" size="icon" onClick={onClose} className="h-8 w-8">
               <X className="h-4 w-4" />
             </Button>
@@ -167,7 +175,7 @@ export default function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProp
                   className="w-full justify-between"
                   onClick={() => setIsStatusOpen(!isStatusOpen)}
                 >
-                  {status === "TO-DO" ? "Choose" : status}
+                  {status}
                   <ChevronDown className="h-4 w-4 ml-2" />
                 </Button>
 
@@ -223,7 +231,7 @@ export default function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProp
             CANCEL
           </Button>
           <Button className="bg-[#7b1984] hover:bg-[#3e0344] text-white" onClick={handleSubmit}>
-            CREATE
+            SAVE CHANGES
           </Button>
         </div>
       </DialogContent>

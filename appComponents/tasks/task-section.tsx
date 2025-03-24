@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useContext } from "react"
+import { useState } from "react"
 import { ChevronDown, ChevronUp, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import TaskItem from "@/appComponents/tasks/task-item"
-import { type Task, TaskContext } from "@/context/task-context"
+import type { Task } from "@/context/task-context"
 
 interface TaskSectionProps {
   title: string
@@ -13,6 +13,8 @@ interface TaskSectionProps {
   bgColor: string
   showAddTask?: boolean
   showLoadMore?: boolean
+  onEditTask?: (taskId: string) => void
+  onAddTask?: () => void
 }
 
 export default function TaskSection({
@@ -22,9 +24,10 @@ export default function TaskSection({
   bgColor,
   showAddTask = false,
   showLoadMore = false,
+  onEditTask,
+  onAddTask,
 }: TaskSectionProps) {
   const [expanded, setExpanded] = useState(true)
-  const { addTask } = useContext(TaskContext)
 
   return (
     <div className="border-b border-[#eaecf0]">
@@ -42,14 +45,14 @@ export default function TaskSection({
         <div>
           {showAddTask && (
             <div className="px-6 py-2 border-t border-[#eaecf0] flex items-center">
-              <Button variant="ghost" className="h-8 px-2 text-sm text-[#7b1984]" onClick={addTask}>
+              <Button variant="ghost" className="h-8 px-2 text-sm text-[#7b1984]" onClick={onAddTask}>
                 <Plus className="h-4 w-4 mr-1" /> ADD TASK
               </Button>
             </div>
           )}
 
           {tasks.map((task) => (
-            <TaskItem key={task.id} task={task} />
+            <TaskItem key={task.id} task={task} onEditTask={onEditTask} />
           ))}
 
           {showLoadMore && (

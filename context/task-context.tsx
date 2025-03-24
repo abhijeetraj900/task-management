@@ -14,6 +14,13 @@ export interface Task {
   priority: number
 }
 
+export interface UserProfile {
+  name: string
+  email: string
+  phone: string
+  photo: string
+}
+
 interface Filters {
   search: string | null
   category: string | null
@@ -32,24 +39,47 @@ interface TaskContextType {
   tasks: Task[]
   filteredTasks: Task[]
   filters: Filters
+  selectedTasks: string[]
+  userProfile: UserProfile
   setFilters: (filters: Filters) => void
   addTask: () => void
   createTask: (data: CreateTaskData) => void
   updateTaskStatus: (id: string, status: "TO-DO" | "IN-PROGRESS" | "COMPLETED") => void
   toggleTaskCompletion: (id: string) => void
   reorderTasks: (sourceId: string, destinationId: string, taskId: string) => void
+  deleteTask: (id: string) => void
+  editTask: (id: string, data: Partial<Task>) => void
+  toggleTaskSelection: (id: string) => void
+  deleteSelectedTasks: () => void
+  clearSelectedTasks: () => void
+  isTaskSelected: (id: string) => boolean
+  updateUserProfile: (data: Partial<UserProfile>) => void
 }
 
 export const TaskContext = createContext<TaskContextType>({
   tasks: [],
   filteredTasks: [],
   filters: { search: null, category: null, dueDate: null },
+  selectedTasks: [],
+  userProfile: {
+    name: "Aravind",
+    email: "aravind@example.com",
+    phone: "+1 (555) 123-4567",
+    photo: "/placeholder.svg?height=32&width=32",
+  },
   setFilters: () => {},
   addTask: () => {},
   createTask: () => {},
   updateTaskStatus: () => {},
   toggleTaskCompletion: () => {},
   reorderTasks: () => {},
+  deleteTask: () => {},
+  editTask: () => {},
+  toggleTaskSelection: () => {},
+  deleteSelectedTasks: () => {},
+  clearSelectedTasks: () => {},
+  isTaskSelected: () => false,
+  updateUserProfile: () => {},
 })
 
 export function TaskProvider({ children }: { children: ReactNode }) {
@@ -60,6 +90,13 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     dueDate: null,
   })
   const [filteredTasks, setFilteredTasks] = useState<Task[]>(tasks)
+  const [selectedTasks, setSelectedTasks] = useState<string[]>([])
+  const [userProfile, setUserProfile] = useState<UserProfile>({
+    name: "Aravind",
+    email: "aravind@example.com",
+    phone: "+1 (555) 123-4567",
+    photo: "/placeholder.svg?height=32&width=32",
+  })
 
   // Apply filters whenever tasks or filters change
   useEffect(() => {
@@ -121,12 +158,23 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     setTasks(tasks.map((task) => (task.id === id ? { ...task, status } : task)))
   }
 
-  // Toggle task completion
+  // Toggle task completion - now moves to next phase
   const toggleTaskCompletion = (id: string) => {
     setTasks(
       tasks.map((task) => {
         if (task.id === id) {
-          const newStatus = task.status === "COMPLETED" ? "TO-DO" : "COMPLETED"
+          // Move to next phase based on current status
+          let newStatus: "TO-DO" | "IN-PROGRESS" | "COMPLETED"
+
+          if (task.status === "TO-DO") {
+            newStatus = "IN-PROGRESS"
+          } else if (task.status === "IN-PROGRESS") {
+            newStatus = "COMPLETED"
+          } else {
+            // If already completed, go back to TO-DO
+            newStatus = "TO-DO"
+          }
+
           return { ...task, status: newStatus }
         }
         return task
@@ -146,18 +194,69 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     )
   }
 
+  // Delete a task
+  const deleteTask = (id: string) => {
+    setTasks(tasks.filter((task) => task.id !== id))
+    // Also remove from selected tasks if it was selected
+    setSelectedTasks(selectedTasks.filter((taskId) => taskId !== id))
+  }
+
+  // Edit a task
+  const editTask = (id: string, data: Partial<Task>) => {
+    setTasks(tasks.map((task) => (task.id === id ? { ...task, ...data } : task)))
+  }
+
+  // Toggle task selection for batch operations
+  const toggleTaskSelection = (id: string) => {
+    if (selectedTasks.includes(id)) {
+      setSelectedTasks(selectedTasks.filter((taskId) => taskId !== id))
+    } else {
+      setSelectedTasks([...selectedTasks, id])
+    }
+  }
+
+  // Delete all selected tasks
+  const deleteSelectedTasks = () => {
+    setTasks(tasks.filter((task) => !selectedTasks.includes(task.id)))
+    setSelectedTasks([])
+  }
+
+  // Clear all selected tasks
+  const clearSelectedTasks = () => {
+    setSelectedTasks([])
+  }
+
+  // Check if a task is selected
+  const isTaskSelected = (id: string) => {
+    return selectedTasks.includes(id)
+  }
+
+  // Update user profile
+  const updateUserProfile = (data: Partial<UserProfile>) => {
+    setUserProfile({ ...userProfile, ...data })
+  }
+
   return (
     <TaskContext.Provider
       value={{
         tasks,
         filteredTasks,
         filters,
+        selectedTasks,
+        userProfile,
         setFilters,
         addTask,
         createTask,
         updateTaskStatus,
         toggleTaskCompletion,
         reorderTasks,
+        deleteTask,
+        editTask,
+        toggleTaskSelection,
+        deleteSelectedTasks,
+        clearSelectedTasks,
+        isTaskSelected,
+        updateUserProfile,
       }}
     >
       {children}
