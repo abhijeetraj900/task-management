@@ -9,11 +9,11 @@ export default function SearchBar() {
   const { filters, setFilters } = useContext(TaskContext)
 
   return (
-    <div className="relative">
+    <div className="relative flex-1 sm:flex-none">
       <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#979797]" />
       <Input
         placeholder="Search"
-        className="pl-8 h-9 w-[240px] text-sm border-[#dddadd] rounded-md"
+        className="pl-8 h-9 w-full sm:w-[240px] text-sm border-[#dddadd] rounded-md"
         value={filters.search || ""}
         onChange={(e) => setFilters({ ...filters, search: e.target.value || null })}
       />

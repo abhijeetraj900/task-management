@@ -11,7 +11,7 @@ import EditTaskModal from "@/appComponents/modals/edit-task-modal"
 import UserProfileModal from "@/appComponents/modals/user-profile-modal"
 import BatchActionsBar from "@/appComponents/tasks/batch-actions-bar"
 import { TaskProvider, TaskContext } from "@/context/task-context"
-import { DndContext, type DragEndEvent, closestCenter, type DragStartEvent, DragOverlay } from "@dnd-kit/core"
+import { DndContext, type DragEndEvent, closestCenter, type DragStartEvent, DragOverlay, pointerWithin } from "@dnd-kit/core"
 import TaskItem from "@/appComponents/tasks/task-item"
 import TaskCard from "@/appComponents/tasks/task-card"
 
@@ -59,10 +59,15 @@ function TaskBuddyContent() {
   }
 
   return (
-    <DndContext collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <DndContext
+      collisionDetection={pointerWithin}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      modifiers={[]}
+    >
       <div className="min-h-screen bg-[#f9f9f9] text-[#231f20] flex flex-col">
         <Header onProfileClick={() => setIsProfileModalOpen(true)} />
-        <main className="flex-1 px-6 py-4">
+        <main className="flex-1 px-3 sm:px-6 py-4 overflow-x-hidden">
           <ViewTabs activeView={activeView} setActiveView={setActiveView} />
           <FilterBar onAddTask={openCreateModal} />
 

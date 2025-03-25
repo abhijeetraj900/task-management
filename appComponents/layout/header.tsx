@@ -14,7 +14,7 @@ export default function Header({ onProfileClick }: HeaderProps) {
   const { userProfile } = useContext(TaskContext)
 
   return (
-    <header className="bg-white border-b border-[#eaecf0] px-6 py-3 flex justify-between items-center">
+    <header className="bg-white border-b border-[#eaecf0] px-3 sm:px-6 py-3 flex flex-wrap justify-between items-center gap-2">
       <div className="flex items-center gap-2">
         <ClipboardList className="h-5 w-5" />
         <span className="font-semibold text-lg">TaskBuddy</span>
@@ -25,7 +25,7 @@ export default function Header({ onProfileClick }: HeaderProps) {
             <AvatarImage src={userProfile.photo} alt={userProfile.name} />
             <AvatarFallback className="bg-[#85d9f1]">{userProfile.name.charAt(0)}</AvatarFallback>
           </Avatar>
-          <span className="text-sm">{userProfile.name}</span>
+          <span className="text-sm hidden sm:inline">{userProfile.name}</span>
         </div>
         <Button variant="outline" size="sm" className="text-xs">
           <span className="mr-1">Logout</span>

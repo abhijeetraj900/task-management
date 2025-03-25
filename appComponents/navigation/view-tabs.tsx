@@ -9,7 +9,7 @@ interface ViewTabsProps {
 
 export default function ViewTabs({ activeView, setActiveView }: ViewTabsProps) {
   return (
-    <div className="flex gap-4 mb-6">
+    <div className="flex gap-4 mb-6 overflow-x-auto">
       <div className={`flex pb-1 ${activeView === "list" ? "border-b border-[#7b1984]" : ""}`}>
         <Button
           variant="ghost"

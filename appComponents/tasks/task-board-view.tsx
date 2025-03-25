@@ -25,7 +25,7 @@ export default function TaskBoardView({ onEditTask, onAddTask }: TaskBoardViewPr
   const { setNodeRef: setCompletedRef } = useDroppable({ id: "COMPLETED" })
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
       <div className="bg-white rounded-md shadow-sm overflow-hidden">
         <div className="bg-[#ffe8e4] px-4 py-3 font-medium flex justify-between items-center">
           <div>Todo ({todoTasks.length})</div>
@@ -37,9 +37,11 @@ export default function TaskBoardView({ onEditTask, onAddTask }: TaskBoardViewPr
           ref={setTodoRef}
           className="p-3 space-y-3 max-h-[calc(100vh-220px)] overflow-y-auto min-h-[200px] border-2 border-transparent hover:border-[#ffe8e4]"
         >
-          {todoTasks.map((task) => (
-            <TaskCard key={task.id} task={task} onEditTask={onEditTask} />
-          ))}
+          {todoTasks.length === 0 ? (
+            <div className="text-center text-gray-500 py-8">No tasks</div>
+          ) : (
+            todoTasks.map((task) => <TaskCard key={task.id} task={task} onEditTask={onEditTask} />)
+          )}
         </div>
       </div>
 
@@ -49,9 +51,11 @@ export default function TaskBoardView({ onEditTask, onAddTask }: TaskBoardViewPr
           ref={setInProgressRef}
           className="p-3 space-y-3 max-h-[calc(100vh-220px)] overflow-y-auto min-h-[200px] border-2 border-transparent hover:border-[#85d9f1]"
         >
-          {inProgressTasks.map((task) => (
-            <TaskCard key={task.id} task={task} onEditTask={onEditTask} />
-          ))}
+          {inProgressTasks.length === 0 ? (
+            <div className="text-center text-gray-500 py-8">No tasks</div>
+          ) : (
+            inProgressTasks.map((task) => <TaskCard key={task.id} task={task} onEditTask={onEditTask} />)
+          )}
         </div>
       </div>
 
@@ -61,9 +65,11 @@ export default function TaskBoardView({ onEditTask, onAddTask }: TaskBoardViewPr
           ref={setCompletedRef}
           className="p-3 space-y-3 max-h-[calc(100vh-220px)] overflow-y-auto min-h-[200px] border-2 border-transparent hover:border-[#ceffcc]"
         >
-          {completedTasks.map((task) => (
-            <TaskCard key={task.id} task={task} onEditTask={onEditTask} />
-          ))}
+          {completedTasks.length === 0 ? (
+            <div className="text-center text-gray-500 py-8">No tasks</div>
+          ) : (
+            completedTasks.map((task) => <TaskCard key={task.id} task={task} onEditTask={onEditTask} />)
+          )}
         </div>
       </div>
     </div>
