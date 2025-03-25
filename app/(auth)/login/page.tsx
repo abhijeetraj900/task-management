@@ -93,19 +93,19 @@ export default function LoginPage() {
           {/* Circle Design Elements */}
           <div className="absolute inset-0 flex items-center justify-center">
             {/* Outer Circle */}
-            <div className="h-[90%] w-[90%] rounded-full border border-purple-300 "></div>
+            <div className="h-[90%] w-[90%] rounded-full border border-purple-400 "></div>
 
             {/* Middle Circle */}
-            <div className="absolute h-[110%] w-[110%] rounded-full border border-purple-300 "></div>
+            <div className="absolute h-[110%] w-[110%] rounded-full border border-purple-400 "></div>
 
             {/* Inner Circle */}
-            <div className="absolute h-[100%] w-[100%] rounded-full border border-purple-300 "></div>
+            <div className="absolute h-[100%] w-[100%] rounded-full border border-purple-400 "></div>
           </div>
 
           {/* App Image */}
-          <div className="absolute right-0 top-1/2 w-[80%] -translate-y-1/2 transform rounded-lg bg-white p-6 shadow-lg">
+          <div className="absolute right-0 top-1/2 w-[80%] -translate-y-1/2 transform rounded-lg bg-white  shadow-lg">
             {/* Placeholder for the app interface image */}
-            <div className="mt-4 h-[800px] w-full overflow-hidden rounded-md bg-gray-100">
+            <div className="mt-4 h-[800px] w-full overflow-hidden rounded-lg bg-gray-100">
               <Image
                 src="/assets/taskScreenshot.png"
                 alt="TaskBuddy App Interface"
