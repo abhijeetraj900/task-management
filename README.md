@@ -1,6 +1,6 @@
 # 🗂 Task Management App
 
-Welcome to the **Task Management App**! This intuitive application allows users to manage their tasks efficiently using both List and Board views. This project was assigned by **AlterCompany** as a task to demonstrate my proficiency in building user-friendly task management solutions.
+Welcome to the **Task Management App**! This intuitive application allows users to manage their tasks efficiently using both List and Board views. This project was assigned by **The Alter Office** as a task to demonstrate my proficiency in building user-friendly task management solutions.
 
 ## ✨ Features
 
