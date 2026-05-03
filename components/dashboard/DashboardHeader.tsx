@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Plus, Calendar } from 'lucide-react';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 
 interface DashboardHeaderProps {
   onAddTransaction: () => void;
@@ -23,6 +24,7 @@ export function DashboardHeader({
           <Calendar className="w-4 h-4 text-muted-foreground" />
           <span className="text-sm font-medium text-foreground">{month}</span>
         </div>
+        <ThemeToggle />
         <Button
           onClick={onAddTransaction}
           className="gap-2 bg-accent hover:bg-accent/90"
